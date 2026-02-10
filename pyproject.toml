@@ -3,7 +3,7 @@ name = "oqullus-sdk"
 version = "0.1.0"
 description = "Oqullus Python SDK"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.8"
 dependencies = ["requests>=2.31.0"]
 
 [build-system]
