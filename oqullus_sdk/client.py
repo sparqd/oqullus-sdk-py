@@ -15,7 +15,7 @@ class OqullusClient:
         session: Optional[requests.Session] = None,
     ) -> None:
         if base_url is None:
-            base_url = os.environ.get("WORKSPACE_BASE_URL")
+            base_url = os.environ.get("WORKSPACE_API_BASE_URL")
             if not base_url:
                 raise RuntimeError("Missing required environment variable: WORKSPACE_BASE_URL")
         self.base_url = base_url.rstrip("/")
