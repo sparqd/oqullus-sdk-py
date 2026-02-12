@@ -21,7 +21,7 @@ class WorkspaceService:
     def _get_headers(self) -> dict:
         return {"Authorization": f"Bearer {self.oauth.access_token()}"}
 
-    def fetch_file_by_path(
+    def fetch_file(
         self,
         path: str,
         dest_path: Optional[str] = None,

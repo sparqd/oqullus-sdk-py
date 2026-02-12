@@ -9,7 +9,7 @@ from oqullus_sdk import OqullusClient
 
 client = OqullusClient()
 
-local_path = client.workspace.fetch_file_by_path(
+local_path = client.workspace.fetch_file(
     "my_workspace@example.com/data.csv"
 )
 print(f"File written to: {local_path}")
