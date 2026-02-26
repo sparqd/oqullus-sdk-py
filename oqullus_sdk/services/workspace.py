@@ -3,8 +3,10 @@ import tempfile
 from typing import Optional
 
 import requests
+from tenacity import retry
 
 from oqullus_sdk.oauth import OAuthTokenManager
+from oqullus_sdk.retry import retry_policy, stop_policy, wait_policy
 
 
 class WorkspaceService:
@@ -21,6 +23,24 @@ class WorkspaceService:
     def _get_headers(self) -> dict:
         return {"Authorization": f"Bearer {self.oauth.access_token()}"}
 
+    @retry(
+        reraise=True,
+        retry=retry_policy,
+        stop=stop_policy,
+        wait=wait_policy,
+    )
+    def _get_file_response(self, url: str, path: str) -> requests.Response:
+        response = self.session.get(
+            url,
+            headers=self._get_headers(),
+            params={"path": path},
+            stream=True,
+        )
+        if response.status_code == 401:
+            return response
+        response.raise_for_status()
+        return response
+
     def fetch_file(
         self,
         path: str,
@@ -33,21 +53,11 @@ class WorkspaceService:
             filename = os.path.basename(path) or "workspace-file"
             dest_path = os.path.join(tempfile.gettempdir(), filename)
 
-        response = self.session.get(
-            url,
-            headers=self._get_headers(),
-            params={"path": path},
-            stream=True,
-        )
+        response = self._get_file_response(url, path)
 
         if response.status_code == 401 and refresh_on_401:
             self.oauth.refresh_tokens()
-            response = self.session.get(
-                url,
-                headers=self._get_headers(),
-                params={"path": path},
-                stream=True,
-            )
+            response = self._get_file_response(url, path)
 
         response.raise_for_status()
 
