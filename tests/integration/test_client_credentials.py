@@ -2,30 +2,14 @@ import os
 from pathlib import Path
 
 import pytest
+from dotenv import load_dotenv
 
-from oqullus_sdk import OAuthConfig, OqullusClient
+from oqullus_sdk import OqullusClient
 
 INTEGRATION_WORKSPACE_PATH = "sparq.demo@proton.me/integration-test.ipynb"
 INTEGRATION_EXPECTED_SUBSTRING = "test"
 DOTENV_PATH = Path(__file__).resolve().parents[2] / ".env.test"
-
-
-def _load_env_test_file() -> None:
-    if not DOTENV_PATH.exists():
-        return
-
-    for raw_line in DOTENV_PATH.read_text(encoding="utf-8").splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, value = line.split("=", 1)
-        key = key.strip()
-        value = value.strip().strip("'\"")
-        if key and value and key not in os.environ:
-            os.environ[key] = value
-
-
-_load_env_test_file()
+load_dotenv(dotenv_path=DOTENV_PATH, override=False)
 
 
 def _get_env(name: str) -> str | None:
@@ -41,22 +25,13 @@ def _require_env(name: str) -> str:
 
 @pytest.mark.integration
 def test_client_credentials_fetch_file(tmp_path: Path) -> None:
-    base_url = _require_env("WORKSPACE_API_BASE_URL")
-    token_url = _require_env("OQULLUS_INTEGRATION_TOKEN_URL")
-    client_id = _require_env("OQULLUS_INTEGRATION_CLIENT_ID")
-    client_secret = _require_env("OQULLUS_INTEGRATION_CLIENT_SECRET")
+    _require_env("WORKSPACE_API_BASE_URL")
+    _require_env("OQULLUS_OAUTH_GRANT_TYPE")
+    _require_env("OQULLUS_OAUTH_TOKEN_URL")
+    _require_env("OQULLUS_OAUTH_CLIENT_ID")
+    _require_env("OQULLUS_OAUTH_CLIENT_SECRET")
 
-    client = OqullusClient(
-        base_url=base_url,
-        oauth=OAuthConfig(
-            grant_type="client_credentials",
-            token_url=token_url,
-            client_id=client_id,
-            client_secret=client_secret,
-            scope=_get_env("OQULLUS_INTEGRATION_SCOPE"),
-            audience=_get_env("OQULLUS_INTEGRATION_AUDIENCE"),
-        ),
-    )
+    client = OqullusClient()
 
     output = tmp_path / "test-integration.ipynb"
     written_path = client.workspace.fetch_file(INTEGRATION_WORKSPACE_PATH, dest_path=str(output))

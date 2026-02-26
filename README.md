@@ -40,20 +40,20 @@ The SDK caches `access_token` in memory and refreshes it when it is close to exp
 
 Set these in the notebook runtime before use:
 
-- `OAUTH_TOKEN_URL`
-- `OAUTH_CLIENT_ID`
-- `OAUTH_CLIENT_SECRET`
-- `OAUTH_GRANT_TYPE` (`refresh_token` or `client_credentials`)
+- `OQULLUS_OAUTH_TOKEN_URL`
+- `OQULLUS_OAUTH_CLIENT_ID`
+- `OQULLUS_OAUTH_CLIENT_SECRET`
+- `OQULLUS_OAUTH_GRANT_TYPE` (`refresh_token` or `client_credentials`)
 
-If `OAUTH_GRANT_TYPE=refresh_token` (default):
+If `OQULLUS_OAUTH_GRANT_TYPE=refresh_token` (default):
 
-- `OAUTH_ACCESS_TOKEN`
-- `OAUTH_REFRESH_TOKEN`
+- `OQULLUS_OAUTH_ACCESS_TOKEN`
+- `OQULLUS_OAUTH_REFRESH_TOKEN`
 
-If `OAUTH_GRANT_TYPE=client_credentials`:
+If `OQULLUS_OAUTH_GRANT_TYPE=client_credentials`:
 
-- `OAUTH_SCOPE` (optional)
-- `OAUTH_AUDIENCE` (optional)
+- `OQULLUS_OAUTH_SCOPE` (optional)
+- `OQULLUS_OAUTH_AUDIENCE` (optional)
 
 ## Integration test (client credentials)
 
@@ -66,9 +66,12 @@ pip install -e ".[dev]"
 Set:
 
 - `WORKSPACE_API_BASE_URL` (workspace API base URL)
-- `OQULLUS_INTEGRATION_TOKEN_URL` (OAuth token endpoint)
-- `OQULLUS_INTEGRATION_CLIENT_ID`
-- `OQULLUS_INTEGRATION_CLIENT_SECRET`
+- `OQULLUS_OAUTH_GRANT_TYPE=client_credentials`
+- `OQULLUS_OAUTH_TOKEN_URL` (OAuth token endpoint)
+- `OQULLUS_OAUTH_CLIENT_ID`
+- `OQULLUS_OAUTH_CLIENT_SECRET`
+- `OQULLUS_OAUTH_SCOPE` (optional)
+- `OQULLUS_OAUTH_AUDIENCE` (optional)
 
 The integration test currently hardcodes workspace path and expected text in
 `tests/integration/test_client_credentials.py`.

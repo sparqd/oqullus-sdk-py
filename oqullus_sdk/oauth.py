@@ -18,14 +18,14 @@ class OAuthConfig:
     client_secret: Optional[str] = None
     scope: Optional[str] = None
     audience: Optional[str] = None
-    access_token_env: str = "OAUTH_ACCESS_TOKEN"
-    refresh_token_env: str = "OAUTH_REFRESH_TOKEN"
-    token_url_env: str = "OAUTH_TOKEN_URL"
-    client_id_env: str = "OAUTH_CLIENT_ID"
-    client_secret_env: str = "OAUTH_CLIENT_SECRET"
-    grant_type_env: str = "OAUTH_GRANT_TYPE"
-    scope_env: str = "OAUTH_SCOPE"
-    audience_env: str = "OAUTH_AUDIENCE"
+    access_token_env: str = "OQULLUS_OAUTH_ACCESS_TOKEN"
+    refresh_token_env: str = "OQULLUS_OAUTH_REFRESH_TOKEN"
+    token_url_env: str = "OQULLUS_OAUTH_TOKEN_URL"
+    client_id_env: str = "OQULLUS_OAUTH_CLIENT_ID"
+    client_secret_env: str = "OQULLUS_OAUTH_CLIENT_SECRET"
+    grant_type_env: str = "OQULLUS_OAUTH_GRANT_TYPE"
+    scope_env: str = "OQULLUS_OAUTH_SCOPE"
+    audience_env: str = "OQULLUS_OAUTH_AUDIENCE"
 
 
 class OAuthTokenManager:
